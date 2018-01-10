@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><title>DU Medical : Doctor</title>
+
+    <script type="text/javascript" src="login.js"></script>
+    <script type="text/javascript" src="fixAppointment.js"></script>
+    <script type="text/javascript" src="logout.js"> </script>
+    <script type="text/javascript" src="doctor_frontJS.js"> </script>
+    <script src="getDrList.js"> </script>
+    <script>
+        //call after page loaded
+        window.onload = getDoctorsList() ;
+        function home_page() {
+            window.location.href = "index.html";
+        }
+        function reload() {
+            window.location.href = "doctor_front.html";
+        }
+
+        var modal = document.getElementById('id03');
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+    <!---datepcer
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css" />
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    --->
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet"  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="doctor.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+<!-------nav bar-------->
+<nav class="navbar navbar-inverse" style="height: 80px; background-color: lightcoral">
+    <div class="container-fluid text-center">
+        <div class="navbar-header">
+            <span class="icon-bar"></span>
+        </div>
+        <a class="navbar-brand" href="index.html">
+            <img src="du.png" style="height:60px" width="200px"/>
+        </a>
+        <div class="container-fluid text-center">
+            <h2 style="color:#045a84; font-size: 40px ;font-style: italic">Du Medical Service</h2>
+        </div>
+    </div>
+</nav>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar2">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar2">
+            <ul class="nav navbar-nav">
+                <li><a href="#intro" onclick="home_page()">Home</a></li>
+                <li><a onclick="reload()" class="active" href="#doctor">Doctor</a></li>
+
+                <li><a href="#appointment" onclick="appointment()" style="width:auto;">Appointment</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a id ="logout" onclick="myFunc()" href="#logout">Logout</a></li>
+            </ul>
+
+            <!-------------------------- search bar-------------------- -->
+
+            <ul class="nav navbar-nav navbar-right">
+                <form class="navbar-form navbar-right" role="search">
+                    <div class="form-group input-group">
+                        <input id=varSearch type="text" class="form-control" list="json-datalist" placeholder="Search Doctor.." onkeypress="searchFun()">
+                        <datalist id="json-datalist"></datalist>
+
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" id ="searchButton" value="Go" onclick="loadDrdetails()">
+                          <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                </form>
+            </ul>
+
+        </div>
+
+    </div>
+
+    <!--------------------------Appointment---------------------------->
+
+    <div id="id03" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+
+        <div class="modal-dialog" action="">
+            <div class="modal-content animate">
+                <div class="imgcontainer">
+                    <span onclick="document.getElementById('id03').style.display='none'" class="close" data-dismiss="modal"title="Close Modal">&times;</span>
+                    <img src="app.png" style="height: auto" width="auto" alt="Avatar" >
+                </div>
+
+                <div class="container2">
+                    <label><b style="color: #045a84">Doctor's Department</b></label>
+                    <input type="text" placeholder="Enter department" list="dept-datalist" id="dept" onclick="getDeptList()" required>
+                    <datalist id="dept-datalist"></datalist>
+                    <p id="deptErr"></p>
+
+                    <label><b style="color: #045a84">Doctor's Name</b></label>
+                    <input type="text" placeholder="Enter name" id="drName" list="dr-datalist" onclick="getDeptDrList()" required>
+                    <datalist id="dr-datalist"></datalist>
+                    <p id="drNameErr"></p>
+
+                    <label><b style="color: #045a84">Date</b></label>
+                    <input type="date" id="date" required>
+                    <p id="dateErr"></p>
+
+
+                    <label><b style="color: #045a84">Select slot</b></label>
+                    <input type="text" id="slot" list="slot-datalist" onclick="slotDropDown()" required>
+                    <datalist id="slot-datalist"></datalist>
+                    <p id="slotErr"></p>
+
+
+                    <button id ="submit" type="submit" style="height: auto" width="auto" onclick="globalAppointment()">Submit</button>
+                    <p id="submitErr"></p>
+                    <!--<button type="submit" style="height: auto" width="auto" onclick="document.getElementById('id02').style.display='block'
+                     "href="#myModal1" data-toggle="modal">Make Health Card</button>-->
+
+                    <button type="button" onclick="document.getElementById('id03').style.display='none'" class="cancelbtn"data-dismiss="modal">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!--<div class="container-fluid text-center" style="background-color: #fa897f">
+    <h1 style="color: #9fdde8">Search Doctors Here</h1>
+    <form>
+        <input id=varSearch type="text" list="json-datalist" placeholder="Search.." onkeypress="searchFun()">
+        <datalist id="json-datalist"></datalist>
+        <input type="submit" id ="searchButton" value=" Go " onclick="loadDrdetails()"></input><br>
+    </form>
+</div><br>-->
+
+<!----------- load more ---------------------------------->
+
+<div id="content"></div>
+<div class="container-fluid text-center">
+    <input type="button" class="btn btn-info" id="loadButton" value="More>>" style="background-color: #045a84; color: lightcoral" onclick="dynamic()">
+
+</div>
+
+<script>
+    $(function() {
+        $("#datepicker").datepicker();
+    });
+</script>
+
+</body>
+</html>
